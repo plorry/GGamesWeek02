@@ -1,6 +1,6 @@
 var gamejs = require('gamejs');
 
-var Scene = require('./gramework/scenes').Scene;
+var GameScene = require('./gramework/scenes').GameScene;
 var Actor = require('./gramework/actors').Actor;
 var Director = require('./gramework/game').Director;
 var Player = require('./trees').Player;
@@ -10,7 +10,7 @@ gamejs.preload(config.RESOURCES);
 
 function main() {
     var director = new Director();
-    var firstScene = new Scene(director, config.scenes.title);
+    var firstScene = new GameScene(director, config.scenes.title);
 
     var physics = firstScene.physics;
 
@@ -23,7 +23,7 @@ function main() {
         angle: 0
     };
     var ball = new Player(actor_opts);
-    actor_opts.x = 8;
+    actor_opts.x = 12;
     var ball2 = new Player(actor_opts);
 
     firstScene.addActors([ball, ball2]);

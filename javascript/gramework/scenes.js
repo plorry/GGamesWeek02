@@ -5,6 +5,8 @@ var Physics  = require('./physics').Physics;
 var Body = require('./physics').Body;
 var Joint = require('./physics').Joint;
 
+var objects = require('gamejs/utils/objects');
+
 var Actor = require('./actors').Actor;
 
 //Scene Class
@@ -33,8 +35,6 @@ Scene.prototype.initScene = function(sceneConfig) {
 	this.scale = sceneConfig.scale || 1;
 	this.physics = new Physics(document.getElementById("gjs-canvas"));
 	this.physics.debug();
-
-    new Body(this.physics, { type: "static", x: 0, y:25, height: 0.5, width: 60 });
 
 	this.triggers = [];
 	
@@ -75,7 +75,7 @@ Scene.prototype.draw = function(display) {
 	
 	//var size = screen.getSize();
 		
-	display.blit(screen);
+	//display.blit(screen);
 	
 	return;
 };
@@ -123,9 +123,21 @@ Scene.prototype.update = function(msDuration) {
 };
 
 var GameScene = exports.GameScene = function(director, sceneConfig) {
-
+	GameScene.superConstructor.apply(this, arguments);
+	return this;
 };
 objects.extend(GameScene, Scene);
+
+GameScene.prototype.initScene = function(sceneConfig) {
+	Scene.prototype.initScene.call(this, sceneConfig);
+
+	new Body(this.physics, { type: "static", x: 0, y:35, height: 0.5, width: 50 });
+	new Body(this.physics, { type: "static", x: 30, y:25, height: 50, width: 0.5 });
+	new Body(this.physics, { type: "static", x: 0, y:25, height: 50, width: 0.5 });
+	new Body(this.physics, { type: "static", x: 0, y:0, height: 0.5, width: 50 });
+
+	return;
+};
 
 var Trigger = exports.Trigger = function(options) {
 	this._active = false;
