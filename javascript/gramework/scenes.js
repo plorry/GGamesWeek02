@@ -131,10 +131,12 @@ objects.extend(GameScene, Scene);
 GameScene.prototype.initScene = function(sceneConfig) {
 	Scene.prototype.initScene.call(this, sceneConfig);
 
-	new Body(this.physics, { type: "static", x: 0, y:35, height: 0.5, width: 50 });
+	new Body(this.physics, { type: "static", x: 0, y:35, height: 0.5, width: 13 });
+	new Body(this.physics, { type: "static", x: 30, y:35, height: 0.5, width: 13 });
 	new Body(this.physics, { type: "static", x: 30, y:25, height: 50, width: 0.5 });
 	new Body(this.physics, { type: "static", x: 0, y:25, height: 50, width: 0.5 });
-	new Body(this.physics, { type: "static", x: 0, y:0, height: 0.5, width: 50 });
+	new Body(this.physics, { type: "static", x: 0, y:0, height: 0.5, width: 13 });
+	new Body(this.physics, { type: "static", x: 30, y:0, height: 0.5, width: 13 });
 
 	return;
 };

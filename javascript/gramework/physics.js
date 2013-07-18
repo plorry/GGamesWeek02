@@ -105,12 +105,14 @@ var Box2D = require('../Box2dWeb-2.1.a.3');
 
     this.body.CreateFixture(this.fixtureDef);
     if (details.type == 'player') {
+      this.fixtureDef.shape = new b2PolygonShape();
+      var vect = b2Vec2(5, 0);
       this.fixtureDef.shape.SetAsBox(
-        details.width/2,
-        details.height*3,
-        new b2Vec2(5, 1),
+        details.width/4,
+        details.height*4,
+        vect,
         0);
-      this.body.CreateFixture(this.fixtureDef);
+        this.body.CreateFixture(this.fixtureDef);
     }
   };
 
