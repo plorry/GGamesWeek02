@@ -1,8 +1,6 @@
 var gamejs = require('gamejs');
-var Camera = require('./camera').Camera;
 
 var Physics  = require('./physics').Physics;
-var Body = require('./physics').Body;
 var Joint = require('./physics').Joint;
 
 var objects = require('gamejs/utils/objects');
@@ -10,12 +8,11 @@ var objects = require('gamejs/utils/objects');
 var Actor = require('./actors').Actor;
 
 //Scene Class
-
+var odd = 0;
 var Scene = exports.Scene = function(director, sceneConfig) {
 	this.director = director;
 	this.display = this.director.display;
 
-	this.camera = new Camera(this, true);
 	this._frozen = false;
 	this.scroll = true;
 
@@ -38,7 +35,8 @@ Scene.prototype.initScene = function(sceneConfig) {
 
 	this.triggers = [];
 	
-    this.view = new gamejs.Surface([this.height, this.width]);		
+    this.view = new gamejs.Surface([this.width, this.height]);
+    this.image = gamejs.image.load(sceneConfig.image) || null;	
 	return;
 };
 
@@ -67,16 +65,22 @@ Scene.prototype.unFreeze = function() {
 };
 
 Scene.prototype.draw = function(display) {
-	this.view.fill("#F0A30F");
+	this.view.blit(this.image);
+
 	this.props.draw(this.view);
 	this.actors.draw(this.view);
 
-	var screen = this.camera.draw();
+	var screen = gamejs.transform.scale(this.view, [600, 700]);
 	
+	display.blit(screen);
 	//var size = screen.getSize();
-		
-	//display.blit(screen);
-	
+	/*
+	if (odd == 0) {
+		display.blit(screen);
+		odd = 1;
+	} else {
+		odd = 0;
+	}*/
 	return;
 };
 
@@ -86,16 +90,6 @@ Scene.prototype.handleEvent = function(event) {
 		actor.handleEvent(event);
 	});
 
-	if (event.type === gamejs.event.KEY_DOWN) {
-		if (event.key === gamejs.event.K_SPACE) {
-			this.camera.zoomTo(2);
-		}
-	}
-	if (event.type === gamejs.event.KEY_UP) {
-		if (event.key === gamejs.event.K_SPACE) {
-			this.camera.zoomTo(1);
-		}
-	}
 	return;
 };
 
@@ -116,27 +110,7 @@ Scene.prototype.update = function(msDuration) {
 			prop.update(msDuration);
 		});
 	}
-	this.camera.update(msDuration);
 	this.elapsed += msDuration;
-
-	return;
-};
-
-var GameScene = exports.GameScene = function(director, sceneConfig) {
-	GameScene.superConstructor.apply(this, arguments);
-	return this;
-};
-objects.extend(GameScene, Scene);
-
-GameScene.prototype.initScene = function(sceneConfig) {
-	Scene.prototype.initScene.call(this, sceneConfig);
-
-	new Body(this.physics, { type: "static", x: 0, y:35, height: 0.5, width: 13 });
-	new Body(this.physics, { type: "static", x: 30, y:35, height: 0.5, width: 13 });
-	new Body(this.physics, { type: "static", x: 30, y:25, height: 50, width: 0.5 });
-	new Body(this.physics, { type: "static", x: 0, y:25, height: 50, width: 0.5 });
-	new Body(this.physics, { type: "static", x: 0, y:0, height: 0.5, width: 13 });
-	new Body(this.physics, { type: "static", x: 30, y:0, height: 0.5, width: 13 });
 
 	return;
 };

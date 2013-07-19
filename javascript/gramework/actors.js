@@ -33,13 +33,13 @@ Actor.prototype.init = function(options) {
 		[this.width * 2 * this.scale, this.height * 2 * this.scale]);
 	this.realRect = new gamejs.Rect(this.rect);
 	//this.collisionRect = new gamejs.Rect([this.rect.left+1, this.rect.top+1],[this.rect.width-2, this.rect.height-2]);
-	/*
+	
 	if (options.spriteSheet) {
         this.spriteSheet = new SpriteSheet(options.spriteSheet[0], options.spriteSheet[1]) || null;
         var animations = options.animations || DEFAULT_ANIMATIONS;
         this.animation = new Animation(this.spriteSheet, animations);
         this.animation.start(this.startingAnimation);
-    }*/
+    }
 
 	return;
 };
@@ -50,9 +50,12 @@ Actor.prototype.update = function(msDuration) {
 		this.realRect.center = [this.body.body.GetPosition().x * this.scale, this.body.body.GetPosition().y * this.scale];
 	}
 
-	this.rect.top = Math.round(this.realRect.top) + 0.5;
-	this.rect.left = Math.round(this.realRect.left) + 0.5;
+	this.rect.height = (Math.abs(this.height * Math.sin(this.body.body.GetAngle()) * this.scale) + Math.abs(this.width * Math.cos(this.body.body.GetAngle()) * this.scale)) * 2;
+	this.rect.width = (Math.abs(this.height * Math.cos(this.body.body.GetAngle()) * this.scale) + Math.abs(this.width * Math.sin(this.body.body.GetAngle()) * this.scale)) * 2;
 	
+	this.rect.top = (Math.round(this.realRect.top) + 0.5 - (this.rect.height) / 2) + (this.height * this.scale);
+	this.rect.left = (Math.round(this.realRect.left) + 0.5 - (this.rect.width) / 2) + (this.width * this.scale);
+
 	if (this.animation) {
 		this.animation.update(msDuration);
 		this.image = this.animation.image;
@@ -71,7 +74,7 @@ Actor.prototype.draw = function(display) {
 	
 	if (this.spriteSheet) {
 		if (this.image) {
-			this.image = gamejs.transform.rotate(this.image, (this.angle - Math.PI/2) * (180 / Math.PI));
+			this.image = gamejs.transform.rotate(this.image, (this.body.body.GetAngle() - Math.PI/2) * (180 / Math.PI));
 			gamejs.sprite.Sprite.prototype.draw.apply(this, arguments);
 		};
 	} else {

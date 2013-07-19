@@ -45,8 +45,8 @@ Player.prototype.init = function(options) {
             type: options.type || 'dynamic',
             x: this.x,
             y: this.y,
-            height: this.height,
-            width: this.width,
+            height: options.phys_height,
+            width: options.phys_width,
             angle: this.angle,
             density: this.density,
             fixedRotation: options.fixedRotation || false,
@@ -65,10 +65,10 @@ Player.prototype.handleEvent = function(event) {
             this.body.body.SetAngularVelocity(-10);
         }
         if (event.key === this.controls['UP']) {
-            this.body.body.ApplyImpulse({x:0, y:-8}, this.body.body.GetWorldCenter())
+            this.body.body.ApplyImpulse({x:0, y:-18}, this.body.body.GetWorldCenter())
         }
         if (event.key === this.controls['DOWN']) {
-            this.body.body.ApplyImpulse({x:0, y:8}, this.body.body.GetWorldCenter())
+            this.body.body.ApplyImpulse({x:0, y:18}, this.body.body.GetWorldCenter())
         }
     } else if (event.type === gamejs.event.KEY_UP) {
         if (event.key === this.controls['RIGHT'] || event.key === this.controls['LEFT']) {
