@@ -13,6 +13,8 @@ var player2_img = exports.player2_img = STATIC_PATH + 'sprites/player2.png';
 var puck_img = exports.puck_img = STATIC_PATH + 'sprites/puck.png';
 var goal_snd = exports.goal_snd = STATIC_PATH + 'sounds/goal.ogg';
 var winn = exports.winn = STATIC_PATH + 'sprites/winn.png';
+var music = exports.music = STATIC_PATH + 'sounds/starfox.ogg';
+var title_img = exports.title_img = STATIC_PATH + 'sprites/hockey.png';
 
 exports.RESOURCES = [
 	rink_image,
@@ -20,12 +22,20 @@ exports.RESOURCES = [
 	player2_img,
 	puck_img,
 	goal_snd,
-	winn
+	winn,
+	music,
+	title_img
 ];
 
 exports.SCALE = 2;
 
 exports.scenes = {
+	'opening': {
+		'width': WIDTH,
+		'height': HEIGHT,
+		'scale': 1,
+		'image': title_img
+	},
 	'title': {
         'width': WIDTH,
         'height': HEIGHT,

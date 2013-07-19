@@ -1,17 +1,20 @@
 var gamejs = require('gamejs');
 
 var GameScene = require('./levels').GameScene;
+var TitleScreen = require('./levels').TitleScreen;
 var Actor = require('./gramework/actors').Actor;
 var Director = require('./gramework/game').Director;
 var Player = require('./trees').Player;
 var Puck = require('./trees').Puck;
 var config = require('./config');
+var playsound = require('./gramework/sounds').playsound;
 
 gamejs.preload(config.RESOURCES);
 
 function main() {
     var director = new Director();
     var firstScene = new GameScene(director, config.scenes.title);
+    var title = new TitleScreen(director, config.scenes.opening);
 
     var physics = firstScene.physics;
 
@@ -55,7 +58,8 @@ function main() {
     var p2_2 = new Player(p2_opts);
 
     firstScene.addActors([ball, ball2, p2_1, p2_2]);
-    director.start(firstScene);
+    director.start(title);
+    director.setNext(firstScene);
     return;
 }
 

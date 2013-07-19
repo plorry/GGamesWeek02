@@ -14,6 +14,7 @@ objects.extend(GameScene, Scene);
 
 GameScene.prototype.initScene = function(sceneConfig) {
     Scene.prototype.initScene.call(this, sceneConfig);
+    this.soundPlaying = false;
 
     new Body(this.physics, { type: "static", x: 0, y:35, height: 0.5, width: 13 });
     new Body(this.physics, { type: "static", x: 30, y:35, height: 0.5, width: 13 });
@@ -75,6 +76,11 @@ GameScene.prototype.update = function(msDuration) {
         this.director.start(next);
     }
 
+    if (this.soundPlaying == false) {
+        playsound(config.music, true);
+        this.soundPlaying = true;
+    }
+
     return;
 };
 
@@ -103,7 +109,6 @@ objects.extend(WinScene, Scene);
 WinScene.prototype.initScene = function(sceneConfig) {
     Scene.prototype.initScene.call(this, sceneConfig);
     this.text = sceneConfig.text;
-    console.log(this.text);
     this.font = new gamejs.font.Font('20px Ebit');
     this.victory_text = this.font.render(this.text, '#000');
     console.log('initialized');
@@ -115,3 +120,16 @@ WinScene.prototype.draw = function(display) {
     display.blit(this.victory_text, [50,250]);
     return;
 }
+
+var TitleScreen = exports.TitleScreen = function(director, sceneConfig) {
+    TitleScreen.superConstructor.apply(this, arguments);
+    return this;
+};
+objects.extend(TitleScreen, Scene);
+
+TitleScreen.prototype.handleEvent = function(event) {
+    if (event.type === gamejs.event.KEY_DOWN) {
+        this.director.startNext();
+    }
+    return;
+};
